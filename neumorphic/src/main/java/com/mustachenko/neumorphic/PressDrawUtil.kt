@@ -3,7 +3,10 @@ package com.mustachenko.neumorphic
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush.Companion.horizontalGradient
+import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import com.mustachenko.neumorphic.model.Radius
@@ -75,56 +78,35 @@ fun DrawScope.drawInnerShadow(
     clip.addRoundRect(roundRect)
     it.clipPath(clip, ClipOp.Intersect)
     val top =
-        VerticalGradient(
+        verticalGradient(
             listOf(topShadowColor, Color.Transparent),
             0f,
             innerShadowSize,
             TileMode.Clamp
-        ).shader
+        )
 
-    val left = HorizontalGradient(
+    val left = horizontalGradient(
         listOf(topShadowColor, Color.Transparent),
         0f,
         innerShadowSize,
         TileMode.Clamp
-    ).shader
+    )
 
-    val bottom = VerticalGradient(
+    val bottom = verticalGradient(
         listOf(bottomShadowColor, Color.Transparent),
         height,
         height - innerShadowSize,
         TileMode.Clamp
-    ).shader
-    val right = HorizontalGradient(
+    )
+    val right = horizontalGradient(
         listOf(bottomShadowColor, Color.Transparent),
         width,
         width - innerShadowSize,
         TileMode.Clamp
-    ).shader
+    )
 
-    val topPaint = Paint().apply {
-        this.alpha = alpha
-        shader = top
-        isAntiAlias = true
-    }
-    val leftPaint = Paint().apply {
-        this.alpha = alpha
-        shader = left
-        isAntiAlias = true
-    }
-    val bottomPaint = Paint().apply {
-        this.alpha = alpha
-        shader = bottom
-        isAntiAlias = true
-    }
-    val rightPaint = Paint().apply {
-        this.alpha = alpha
-        shader = right
-        isAntiAlias = true
-    }
-
-    it.drawRect(bounds, topPaint)
-    it.drawRect(bounds, leftPaint)
-    it.drawRect(bounds, bottomPaint)
-    it.drawRect(bounds, rightPaint)
+    drawRect(top, size = Size(bounds.width, bounds.height), alpha = alpha)
+    drawRect(left, size = Size(bounds.width, bounds.height), alpha = alpha)
+    drawRect(bottom, size = Size(bounds.width, bounds.height), alpha = alpha)
+    drawRect(right, size = Size(bounds.width, bounds.height), alpha = alpha)
 }
