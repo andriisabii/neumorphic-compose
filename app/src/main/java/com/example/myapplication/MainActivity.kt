@@ -25,6 +25,9 @@ import com.mustachenko.neumorphic.model.TapType
 import com.example.myapplication.ui.theme.topShadowColor
 import com.mustachenko.neumorphic.pressable
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,12 +49,10 @@ fun Greeting(name: String) {
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            ImageVector.vectorResource(id = R.drawable.ic_launcher_background),
-            "logo",
-            contentScale = ContentScale.Crop,
+        val image = ImageVector.vectorResource(id = R.drawable.ic_launcher_background)
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .wrapContentSize()
                 .padding(16.dp, 16.dp)
                 .pressable(
                     backgroundColor = background,
@@ -63,8 +64,17 @@ fun Greeting(name: String) {
                     border = 4.dp,
                     innerShadowSize = 32.dp,
                     tapType = TapType.CLICK,
+                    requestInnerShadow = true
                 )
-        )
+        ) {
+            Image(
+                image,
+                "logo",
+                Modifier
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Crop
+            )
+        }
 
         Box(
             modifier = Modifier
